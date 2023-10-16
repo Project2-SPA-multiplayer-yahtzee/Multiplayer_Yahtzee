@@ -1,7 +1,10 @@
 import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
+import { Leaderboard } from "./components/Leaderboard";
+import { CreateLobby } from "./components/CreateLobby";
+import { JoinLobby } from "./components/JoinLobby";
+import { Rules } from "./components/Rules";
 import { Home } from "./components/Home";
+
 
 const AppRoutes = [
   {
@@ -9,14 +12,21 @@ const AppRoutes = [
     element: <Home />
   },
   {
-    path: '/counter',
-    element: <Counter />
+    path: '/leaderboard',
+    element: <Leaderboard />
   },
   {
-    path: '/fetch-data',
-    requireAuth: true,
-    element: <FetchData />
-  },
+    path: '/createlobby',
+    element: <CreateLobby />
+   },
+   {
+     path: '/joinlobby',
+     element: <JoinLobby />
+   },
+   {
+     path: '/rules',
+     element: <Rules />
+   },
   ...ApiAuthorzationRoutes
 ];
 
