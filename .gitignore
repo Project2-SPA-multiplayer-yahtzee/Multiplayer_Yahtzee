@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/project2_multiplayer_yahtzee/FileContentIndex
+/.vs/project2_multiplayer_yahtzee/v17/.suo
+/project2_multiplayer_yahtzee/appsettings.json
