@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
 
 
-export class JoinLobby extends Component { }
+export class JoinLobby extends Component {
+    render() {
+        return (
+            <div>
+            </div>
+        );
+    }
+}

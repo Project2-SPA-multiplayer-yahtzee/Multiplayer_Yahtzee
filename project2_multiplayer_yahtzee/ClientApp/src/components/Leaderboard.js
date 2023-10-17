@@ -35,9 +35,7 @@ export class Leaderboard extends Component {
                         )}
                     </tbody>
                 </table>
-
             </div>
         );
     }
-
 }

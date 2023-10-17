@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using project2_multiplayer_yahtzee.ChatHub;
 using project2_multiplayer_yahtzee.Data;
 using project2_multiplayer_yahtzee.Models;
 
@@ -32,6 +33,17 @@ namespace project2_multiplayer_yahtzee
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+            builder.Services.AddSignalR();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("https://localhost:44415")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -49,9 +61,16 @@ namespace project2_multiplayer_yahtzee
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHubService>("/chathub");
+            });
 
             app.MapControllerRoute(
                 name: "default",
