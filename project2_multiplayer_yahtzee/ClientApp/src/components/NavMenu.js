@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Navbar, NavbarBrand, NavbarToggler, Nav, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
@@ -13,6 +13,9 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true
+      };
+    this.state = {
+          dropdownOpen: false,
     };
   }
 
@@ -20,34 +23,45 @@ export class NavMenu extends Component {
     this.setState({
       collapsed: !this.state.collapsed
     });
-  }
+    }
+  toggleDropdown = () => {
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  };
 
-  render() {
-    return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">project2_multiplayer_yahtzee</NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-          <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-              </NavItem>
-             <NavItem>
-                 <NavLink tag={Link} className="text-dark" to="/leaderboard">Leaderboard</NavLink>
-             </NavItem>
-              <LoginMenu>
-              </LoginMenu>
-            </ul>
-          </Collapse>
-        </Navbar>
-      </header>
-    );
+    render() {
+        const { collapsed, dropdownOpen } = this.state;
+
+
+        return (
+            <Navbar expand="lg" className="bg-primary navbar-expand-lg" data-bs-theme="dark">
+                <div className="container-fluid d-flex justify-content-between align-items-center">
+                    <NavbarBrand tag={Link} to="/">Yahtzee!!</NavbarBrand>
+                    <NavbarToggler onClick={this.toggleNavbar} type="button">
+                        <span className="navbar-toggler-icon"></span>
+                    </NavbarToggler>
+                    <Collapse className={`navbar-collapse ${collapsed ? 'collapse' : ''}`} id="navbarColor01">
+                        <Nav className="mx-auto">
+                            <NavItem>
+                                <NavLink tag={Link} className={`nav-link ${collapsed ? 'active' : ''}`} to="/">Home <span className="visually-hidden">(current)</span></NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} className="nav-link" to="/leaderboard">Leaderboard</NavLink>
+                            </NavItem>
+                            <Dropdown isOpen={dropdownOpen} toggle={this.toggleDropdown}>
+                                <DropdownToggle caret className="nav-link">Yahtzee!</DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem tag={Link} to="/create-lobby">Create Lobby</DropdownItem>
+                                    <DropdownItem tag={Link} to="/join-lobby">Join Lobby</DropdownItem>
+                                    <DropdownItem tag={Link} to="/rules">Rules</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </Nav>
+                    </Collapse>
+                    <Nav className="ml-auto">
+                        <LoginMenu />
+                    </Nav>
+                </div>
+            </Navbar>
+        );
   }
 }

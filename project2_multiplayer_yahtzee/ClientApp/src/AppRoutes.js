@@ -7,27 +7,27 @@ import { Home } from "./components/Home";
 
 
 const AppRoutes = [
-    {
-        index: true,
-        element: <Home />
-    },
-    {
-        path: '/leaderboard',
-        element: <Leaderboard />
-    },
-    {
-        path: '/createlobby',
-        element: <CreateLobby />
-    },
-    {
-        path: '/joinlobby',
-        element: <JoinLobby />
-    },
-    {
-        path: '/rules',
-        element: <Rules />
-    },
-    ...ApiAuthorzationRoutes
+  {
+    index: true,
+    element: <Home />
+  },
+  {
+    path: '/leaderboard',
+    element: <Leaderboard />
+  },
+  {
+    path: '/createlobby',
+    element: <CreateLobby />
+   },
+   {
+     path: '/joinlobby',
+     element: <JoinLobby />
+   },
+   {
+     path: '/rules',
+     element: <Rules />
+   },
+  ...ApiAuthorzationRoutes
 ];
 
 export default AppRoutes;
