@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { chatHub, sendMessage } from './ChatHub';
-import './chat.css';
 
 function Chat() {
     const [messageList, setMessageList] = useState([]);
@@ -23,26 +22,32 @@ function Chat() {
 
     
     return (
-        <div className="app">
-            <div className="chat-window">
-                <div className="chat-body">
-                    <div className="message-list">
+        <div className="container">
+            <div className="row">
+                <div className="col-12">
+                    <div className="list-group">
                         {messageList.map((msg, index) => (
-                            <div key={index}>
+                            <div key={index} className="list-group-item">
                                 <strong>{msg.user}: </strong> {msg.message}
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className="chat-input">
-                    <input
-                        value={newMessage}
-                        onChange={e => setNewMessage(e.target.value)}
-                        placeholder="Enter message..."
-                    />
-                    <button onClick={sendChatMessage}>
-                        Send
-                    </button>
+                <div className="col-12">
+                    <div className="input-group mt-3">
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={newMessage}
+                            onChange={e => setNewMessage(e.target.value)}
+                            placeholder="Enter message..."
+                        />
+                        <div className="input-group-append">
+                            <button className="btn btn-primary" onClick={sendChatMessage}>
+                                Send
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
