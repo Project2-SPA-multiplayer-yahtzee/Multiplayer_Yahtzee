@@ -8,7 +8,12 @@ const sendMessage = async (user, message) => {
     await chatHub.invoke('SendMessage', user, message);
 }
 
+const diceRolls = async (roll) => {
+    await chatHub.invoke('DiceRolls', roll);
+}
+
 export {
     chatHub,
-    sendMessage
+    sendMessage,
+    diceRolls
 };
