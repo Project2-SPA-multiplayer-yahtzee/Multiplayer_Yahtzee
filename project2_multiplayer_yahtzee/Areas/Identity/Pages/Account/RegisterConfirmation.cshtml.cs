@@ -18,10 +18,10 @@ namespace project2_multiplayer_yahtzee.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Player> _userManager;
         private readonly IEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<Player> userManager, IEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;

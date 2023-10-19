@@ -24,9 +24,9 @@ const GameLobby = () => {
     };
 
     const createGame = () => {
-        // Create a new game and add it to the list of games
         axios.post('/api/games', { name: newGameName })
-            .then(() => {
+            .then((response) => {
+                console.log('Create Game Response:', response.data); // Log the response data
                 setNewGameName('');
                 fetchGames(); // Refresh the list of games
             })
