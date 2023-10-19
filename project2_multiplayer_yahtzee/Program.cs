@@ -21,11 +21,14 @@ namespace project2_multiplayer_yahtzee
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddDefaultIdentity<Player>(options => options.SignIn.RequireConfirmedAccount = true)
+                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<Player, ApplicationDbContext>();
 
             builder.Services.AddAuthentication()
                 .AddIdentityServerJwt();
@@ -45,6 +48,8 @@ namespace project2_multiplayer_yahtzee
             });
 
             var app = builder.Build();
+
+            app.MapHub<YahtzeeHub>("/yahtzeehub");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
