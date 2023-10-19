@@ -9,12 +9,12 @@ const GameLobby = () => {
     const [joiningGameId, setJoiningGameId] = useState(null);
 
     useEffect(() => {
-        // Fetch the list of available games when the component mounts
-        fetchGames();
+        // Get the list of available games when the component mounts
+        getGames();
     }, []);
 
-    const fetchGames = () => {
-        axios.get('/api/games')
+    const getGames = () => {
+        axios.get('/api/Game')
             .then((response) => {
                 setGames(response.data);
             })
@@ -24,7 +24,7 @@ const GameLobby = () => {
     };
 
     const createGame = () => {
-        axios.post('/api/games', { name: newGameName })
+        axios.post('/api/Game', { name: newGameName })
             .then((response) => {
                 console.log('Create Game Response:', response.data); // Log the response data
                 setNewGameName('');
@@ -37,7 +37,7 @@ const GameLobby = () => {
 
     const joinGame = (gameId) => {
         // Join the selected game
-        axios.post(`/api/games/${gameId}/join`)
+        axios.post(`/api/Game/${gameId}/join`)
             .then(() => {
                 setJoiningGameId(null);
                 fetchGames(); // Refresh the list of games

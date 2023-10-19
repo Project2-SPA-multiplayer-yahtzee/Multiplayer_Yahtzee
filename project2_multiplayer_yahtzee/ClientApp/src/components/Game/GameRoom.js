@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Scorecard from './Scorecard'; // Import your Scorecard component
-import DiceRoll from './DiceRoll'; // Import your DiceRoll component
+import Scorecard from './Scorecard';
+import DiceRoll from './DiceRoll'; 
+import Chat from '../Chat/Chat'
 
 const GameRoom = ({ gameId, playerId }) => {
     const [game, setGame] = useState(null);
@@ -14,7 +15,7 @@ const GameRoom = ({ gameId, playerId }) => {
     }, [gameId, playerId]);
 
     const fetchGameDetails = () => {
-        axios.get(`/api/games/${gameId}`)
+        axios.get(`/api/Game/${gameId}`)
             .then((response) => {
                 setGame(response.data);
             })
@@ -65,6 +66,7 @@ const GameRoom = ({ gameId, playerId }) => {
                     {game.started && (
                         <DiceRoll playerId={player.id} gameId={game.id} />
                     )}
+                    <Chat />
                 </div>
             )}
         </div>
