@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,37 +22,24 @@ namespace project2_multiplayer_yahtzee.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
+        [HttpGet("getgames")]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            var user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-            {
-                return Unauthorized();
-            }
-
-            var games = await _context.Games
-                .Where(g => g.HostPlayerId == user.Id)
-                .ToListAsync();
+            
+            var games = await _context.Games.ToListAsync();
 
             return Ok(games);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Game>> CreateGame(Game game)
+        [HttpPost("creategame")]
+        public async Task<ActionResult<Game>> CreateGame( string gameName)
         {
-            var user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-            {
-                return Unauthorized();
-            }
-
-            game.HostPlayerId = user.Id;
+            var game = new Game();
+            game.Name = gameName;
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetGame", new { id = game.Id }, game);
+
+            return Ok(game);
         }
 
         [HttpGet("{id}")]
@@ -83,13 +71,6 @@ namespace project2_multiplayer_yahtzee.Controllers
             if (user == null)
             {
                 return Unauthorized();
-            }
-
-            // Check if the user is already hosting the game.
-            if (game.HostPlayerId == user.Id)
-            {
-                // User is already hosting the game, return a conflict response or other appropriate response.
-                return Conflict();
             }
 
             // Check if the user has reached the game's max players limit.
@@ -187,7 +168,5 @@ namespace project2_multiplayer_yahtzee.Controllers
             // Return the game details as JSON response.
             return Ok(game);
         }
-
-
     }
 }

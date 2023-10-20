@@ -7,14 +7,25 @@ const GameLobby = () => {
     const [games, setGames] = useState([]);
     const [newGameName, setNewGameName] = useState('');
     const [joiningGameId, setJoiningGameId] = useState(null);
+    const [fetchGames, setFetchGames] = useState();
+    const [game, setGame] = useState({
+        Name = "Testsss"
+    }
 
     useEffect(() => {
         // Get the list of available games when the component mounts
         getGames();
+        axios.get('/api/Game/getgames')
+            .then(response => {
+                setFetchGames(response.data);
+            })
+            .catch(error => {
+                // Handle errors, e.g., user is not authenticated
+            });
     }, []);
 
     const getGames = () => {
-        axios.get('/api/Game')
+        axios.get('/api/Game/getgames')
             .then((response) => {
                 setGames(response.data);
             })
@@ -23,16 +34,16 @@ const GameLobby = () => {
             });
     };
 
-    const createGame = () => {
-        axios.post('/api/Game', { name: newGameName })
-            .then((response) => {
-                console.log('Create Game Response:', response.data); // Log the response data
-                setNewGameName('');
-                fetchGames(); // Refresh the list of games
-            })
-            .catch((error) => {
-                console.error('Error creating a game: ', error);
-            });
+   
+        
+
+    const createGame = async () => {
+        try {
+            const response = await axios.post('https://localhost:7014/api/Game/creategame', game);
+            console.log(response.data);
+        } catch (error) {
+            console.error('There was an error!', error);
+        }
     };
 
     const joinGame = (gameId) => {
@@ -53,12 +64,7 @@ const GameLobby = () => {
 
             <div>
                 <h3>Create a New Game</h3>
-                <input
-                    type="text"
-                    placeholder="Game Name"
-                    value={newGameName}
-                    onChange={(e) => setNewGameName(e.target.value)}
-                />
+            
                 <button onClick={createGame}>Create</button>
             </div>
 
