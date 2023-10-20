@@ -77,9 +77,6 @@ export default GameRoom;
 
 
 
-
-
-
 //Display the game board with scorecards for each player.
 //Show a dice roller component for rolling the dice.
 //Implement game logic for scoring and tracking turns.

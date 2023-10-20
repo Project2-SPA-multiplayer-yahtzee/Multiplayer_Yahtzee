@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using project2_multiplayer_yahtzee.Data;
 
@@ -11,9 +12,10 @@ using project2_multiplayer_yahtzee.Data;
 namespace project2_multiplayer_yahtzee.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231020183356_fml")]
+    partial class fml
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,8 +336,10 @@ namespace project2_multiplayer_yahtzee.Data.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PlayerId")
-                        .IsRequired()
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlayerId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Score")
@@ -345,7 +349,7 @@ namespace project2_multiplayer_yahtzee.Data.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.HasIndex("PlayerId");
+                    b.HasIndex("PlayerId1");
 
                     b.ToTable("PlayerGames");
                 });
@@ -476,9 +480,7 @@ namespace project2_multiplayer_yahtzee.Data.Migrations
 
                     b.HasOne("project2_multiplayer_yahtzee.Models.ApplicationUser", "Player")
                         .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerId1");
 
                     b.Navigation("Game");
 

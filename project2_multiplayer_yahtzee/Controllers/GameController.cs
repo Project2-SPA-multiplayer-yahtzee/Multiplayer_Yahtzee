@@ -14,9 +14,9 @@ namespace project2_multiplayer_yahtzee.Controllers
     public class GameController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<Player> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public GameController(ApplicationDbContext context, UserManager<Player> userManager)
+        public GameController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -27,22 +27,18 @@ namespace project2_multiplayer_yahtzee.Controllers
         {
             
             var games = await _context.Games.ToListAsync();
-
             return Ok(games);
         }
 
         [HttpPost("creategame")]
-        public async Task<ActionResult<Game>> CreateGame( string gameName)
+        public async Task<ActionResult<Game>> CreateGame([FromBody] Game game)
         {
-            var game = new Game();
-            game.Name = gameName;
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
-
             return Ok(game);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
             var game = await _context.Games.FindAsync(id);
@@ -55,7 +51,7 @@ namespace project2_multiplayer_yahtzee.Controllers
             return Ok(game);
         }
 
-        [HttpPost("{id}/join")]
+        [HttpPost("join/{id}")]
         public async Task<IActionResult> JoinGame(int id)
         {
             var game = await _context.Games.FindAsync(id);
@@ -65,33 +61,33 @@ namespace project2_multiplayer_yahtzee.Controllers
                 return NotFound();
             }
 
-            // Get the current user (player) from the authenticated context.
-            var user = await _userManager.GetUserAsync(User);
+            //// Get the current user (player) from the authenticated context.
+            //var user = await _userManager.GetUserAsync(User);
 
-            if (user == null)
-            {
-                return Unauthorized();
-            }
+            //if (user == null)
+            //{
+            //    return Unauthorized();
+            //}
 
-            // Check if the user has reached the game's max players limit.
-            if (game.PlayerGames.Count >= game.MaxPlayers)
-            {
-                // Game is full, return an appropriate response.
-                return BadRequest("Game is full.");
-            }
+            //// Check if the user has reached the game's max players limit.
+            //if (game.PlayerGames.Count >= game.MaxPlayers)
+            //{
+            //    // Game is full, return an appropriate response.
+            //    return BadRequest("Game is full.");
+            //}
 
-            // Check if the user is already in the game.
-            if (game.PlayerGames.Any(pg => pg.PlayerId == int.Parse(user.Id)))
-            {
-                // User is already in the game, return a conflict response or other appropriate response.
-                return Conflict();
-            }
+            //// Check if the user is already in the game.
+            //if (game.PlayerGames.Any(pg => pg.PlayerId == user.Id))
+            //{
+            //    // User is already in the game, return a conflict response or other appropriate response.
+            //    return Conflict();
+            //}
 
             // Create a PlayerGame entry to associate the player with the game.
             var playerGame = new PlayerGame
             {
-                Player = user,
-                Game = game
+                PlayerId = "741c341c-e610-458c-a45b-8ee6a3ba5190",
+                GameId = game.Id
             };
 
             _context.PlayerGames.Add(playerGame);
@@ -100,12 +96,10 @@ namespace project2_multiplayer_yahtzee.Controllers
         }
 
 
-
-        [HttpPost("{id}/start")]
+        [HttpPut("start/{id}")]
         public async Task<IActionResult> StartGame(int id)
         {
             var game = await _context.Games
-                .Include(g => g.PlayerGames)
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             if (game == null)
@@ -118,9 +112,6 @@ namespace project2_multiplayer_yahtzee.Controllers
             {
                 game.Started = true;
 
-                // Initialize the game state for a Yahtzee game.
-                InitializeYahtzeeGame(game);
-
                 // Save changes to the database.
                 await _context.SaveChangesAsync();
 
@@ -131,17 +122,33 @@ namespace project2_multiplayer_yahtzee.Controllers
             return BadRequest("The game is already started.");
         }
 
-        private void InitializeYahtzeeGame(Game game)
+        [HttpPut("finish/{id}")]
+        public async Task<IActionResult> FinishGame(int id)
         {
-            // Initialize each player's dice values, player score, and roll count.
-            foreach (var playerGame in game.PlayerGames)
+            var game = await _context.Games
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (game == null)
             {
-                playerGame.RollCount = 3; // Initial roll count for each player.
+                return NotFound();
             }
+
+            // Additional logic to start the game here.
+            if (game.Started)
+            {
+                game.Started = false;
+
+                // Save changes to the database.
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+
+            // Handle cases where the game is already started.
+            return BadRequest("Game is over");
         }
 
-
-        [HttpGet("api/players/{playerId}")]
+        [HttpGet("(player/{playerId}")]
         public async Task<IActionResult> FetchPlayerDetails(string playerId)
         {
             var player = await _context.Players.FindAsync(playerId);
@@ -155,10 +162,10 @@ namespace project2_multiplayer_yahtzee.Controllers
             return Ok(player);
         }
 
-        [HttpGet("api/games/{gameId}")]
+        [HttpGet("game/{gameId}")]
         public async Task<IActionResult> FetchGameDetails(int gameId)
         {
-            var game = await _context.Games.FindAsync(gameId);
+            var game = await _context.PlayerGames.FindAsync(gameId);
 
             if (game == null)
             {

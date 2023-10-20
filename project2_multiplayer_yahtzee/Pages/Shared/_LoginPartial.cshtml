@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using project2_multiplayer_yahtzee.Models;
-@inject SignInManager<Player> SignInManager
-@inject UserManager<Player> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     string? returnUrl = null;

@@ -16,7 +16,7 @@ namespace project2_multiplayer_yahtzee.Data
 
         public DbSet<Game> Games { get; set; }
         public DbSet<PlayerGame> PlayerGames { get; set; }
-        public DbSet<Player> Players { get; set; }
+        public DbSet<ApplicationUser> Players { get; set; }
 
        
     }
