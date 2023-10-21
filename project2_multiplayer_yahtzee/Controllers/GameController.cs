@@ -100,86 +100,78 @@ namespace project2_multiplayer_yahtzee.Controllers
         }
 
 
-            [HttpPut("start/{id}")]
-            public async Task<IActionResult> StartGame(int id)
+        [HttpPut("start/{id}")]
+        public async Task<IActionResult> StartGame(int id)
+        {
+            var game = await _context.Games
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (game == null)
             {
-                var game = await _context.Games
-                    .FirstOrDefaultAsync(g => g.Id == id);
-
-                if (game == null)
-                {
-                    return NotFound();
-                }
-
-                // Additional logic to start the game here.
-                if (!game.Started)
-                {
-                    game.Started = true;
-
-                    // Save changes to the database.
-                    await _context.SaveChangesAsync();
-
-                    return NoContent();
-                }
-
-                // Handle cases where the game is already started.
-                return BadRequest("The game is already started.");
+                return NotFound();
             }
 
-            [HttpPut("finish/{id}")]
-            public async Task<IActionResult> FinishGame(int id)
+            // Additional logic to start the game here.
+            if (!game.Started)
             {
-                var game = await _context.Games
-                    .FirstOrDefaultAsync(g => g.Id == id);
+                game.Started = true;
 
-                if (game == null)
-                {
-                    return NotFound();
-                }
+                // Save changes to the database.
+                await _context.SaveChangesAsync();
 
-                // Additional logic to start the game here.
-                if (game.Started)
-                {
-                    game.Started = false;
-
-                    // Save changes to the database.
-                    await _context.SaveChangesAsync();
-
-                    return NoContent();
-                }
-
-                // Handle cases where the game is already started.
-                return BadRequest("Game is over");
+                return NoContent();
             }
 
-            [HttpGet("(player/{playerId}")]
-            public async Task<IActionResult> FetchPlayerDetails(string playerId)
-            {
-                var player = await _context.Players.FindAsync(playerId);
-
-                if (player == null)
-                {
-                    return NotFound();
-                }
-
-                // Return the player details as JSON response.
-                return Ok(player);
-            }
-
-            [HttpGet("game/{gameId}")]
-            public async Task<IActionResult> FetchGameDetails(int gameId)
-            {
-                var game = await _context.PlayerGames
-                    .Where(pg => pg.GameId == gameId)
-                    .ToListAsync();
-
-                if (game == null)
-                {
-                    return NotFound();
-                }
-                // Return the game details as JSON response.
-                return Ok(game);
-            }
+            // Handle cases where the game is already started.
+            return BadRequest("The game is already started.");
         }
+
+        [HttpPut("finish/{id}")]
+        public async Task<IActionResult> FinishGame(int id)
+        {
+            var game = await _context.Games
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            // Additional logic to start the game here.
+            if (game.Started)
+            {
+                game.Started = false;
+
+                // Save changes to the database.
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+
+            // Handle cases where the game is already started.
+            return BadRequest("Game is over");
+        }
+
+        [HttpGet("getPlayersInGame/{id}")]
+        public async Task<ActionResult<IEnumerable<PlayerGame>>> GetPlayerGamesByGameId(int id)
+        {
+            var gamePlayers = await _context.PlayerGames
+                .Include(u => u.Player.UserName)
+                .Where(pg => pg.GameId == id)
+                .ToListAsync();
+
+            return Ok(gamePlayers);
+        }
+
+        [HttpGet("getAllPlayerGame")]
+        public async Task<ActionResult<IEnumerable<PlayerGame>>> GetAllPlayerGame()
+        {
+            var playerGame = await _context.PlayerGames.ToListAsync();
+
+            return Ok(playerGame);
+        }
+
+
     }
+}
 
