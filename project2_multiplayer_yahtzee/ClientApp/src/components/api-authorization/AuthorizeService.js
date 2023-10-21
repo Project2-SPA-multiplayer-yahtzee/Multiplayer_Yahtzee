@@ -90,6 +90,7 @@ export class AuthorizeService {
     }
   }
 
+
   // We try to sign out the user in two different ways:
   // 1) We try to do a sign-out using a PopUp Window. This might fail if there is a
   //    Pop-Up blocker or the user has disabled PopUps.

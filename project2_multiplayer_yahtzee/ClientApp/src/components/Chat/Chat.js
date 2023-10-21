@@ -19,7 +19,6 @@ function Chat() {
         await sendMessage('User1', newMessage);
         setNewMessage('');
     }
-
     
     return (
         <div className="container">

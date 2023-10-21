@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using project2_multiplayer_yahtzee.ChatHub;
+using project2_multiplayer_yahtzee.Controllers;
 using project2_multiplayer_yahtzee.Data;
 using project2_multiplayer_yahtzee.Models;
-
 
 namespace project2_multiplayer_yahtzee
 {
@@ -16,6 +17,7 @@ namespace project2_multiplayer_yahtzee
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));

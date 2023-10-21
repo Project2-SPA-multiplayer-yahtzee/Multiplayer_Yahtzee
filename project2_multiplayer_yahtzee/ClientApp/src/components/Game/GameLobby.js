@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import axios from 'axios';
+import authService from '../api-authorization/AuthorizeService';
 
 function GameLobby() {
     const [game, setGame] = useState({
@@ -34,20 +35,24 @@ const getGames = async () => {
         }
     };
 
+    //const joinGame = async () => {
+    //    try {
+    //        const response = await axios.post('https://localhost:7015/api/Game/join/1');
+    //        console.log(response.data);
+    //    } catch (error) {
+    //        console.error('There was an error!', error);
+    //    }
+    //};
+
     const joinGame = async () => {
         try {
-            const response = await axios.post('https://localhost:7015/api/Game/join/1');
-            console.log(response.data);
-        } catch (error) {
-            console.error('There was an error!', error);
+            const user = await authService.getUser();
+            const testSub = user.sub;
+            const response = await axios.post('https://localhost:7015/api/Game/join/1', `${testSub}`, {
+                headers: { 'Content-Type': 'text/plain' }
+            });
         }
-    };
-
-    const fetchDetail = async () => {
-        try {
-            const response = await axios.get('https://localhost:7015/api/Game/game/1');
-            console.log(response.data);
-        } catch (error) {
+        catch (error) {
             console.error('There was an error!', error);
         }
     };
@@ -71,10 +76,10 @@ const getGames = async () => {
                 <h3>Join Game</h3>
                 <button onClick={joinGame}>Join</button>
             </div>
-            <div>
-                <h3>Fetch Game detail</h3>
-                <button onClick={fetchDetail}>Fetch</button>
-            </div>
+            {/*<div>*/}
+            {/*    <h3>Fetch Game detail</h3>*/}
+            {/*    <button onClick={fetchDetail}>Fetch</button>*/}
+            {/*</div>*/}
         </div>
     );
 }
