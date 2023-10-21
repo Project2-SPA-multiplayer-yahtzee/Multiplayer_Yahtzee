@@ -133,3 +133,5 @@ $RECYCLE.BIN/
 .DS_Store
 
 _NCrunch*
+/.vs/project2_multiplayer_yahtzee/DesignTimeBuild/.dtbcache.v2
+/.vs/project2_multiplayer_yahtzee/v17/.suo
