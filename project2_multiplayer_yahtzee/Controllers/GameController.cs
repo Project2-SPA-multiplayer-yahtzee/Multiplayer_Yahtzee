@@ -73,7 +73,6 @@ namespace project2_multiplayer_yahtzee.Controllers
                 {
                     PlayerId = userId,
                     GameId = game.Id,
-                    Score = 0
                 };
 
                 _context.PlayerGames.Add(playerGame);
@@ -147,7 +146,6 @@ namespace project2_multiplayer_yahtzee.Controllers
                     PlayerId = pg.PlayerId,
                     UserName = pg.Player.UserName, 
                     GameId = pg.GameId,
-                    Score = pg.Score
                 })
                 .ToListAsync();
 

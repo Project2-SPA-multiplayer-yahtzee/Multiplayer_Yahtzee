@@ -8,5 +8,7 @@ public class PlayerGame
 
     public int GameId { get; set; }
     public Game Game { get; set; }
-    public int Score { get; set; }
+    public int GamesPlayed { get; set; }
+    public int GamesWon { get; set; }
+
 }
