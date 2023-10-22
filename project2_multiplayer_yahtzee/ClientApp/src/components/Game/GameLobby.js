@@ -34,28 +34,27 @@ function GameLobby() {
     };
 
 
-    const joinGame = async (gameIdForGameRoom) => {
+    const joinGame = async (gId) => {
         try {
             
             const user = await authService.getUser();
-            gameIdForGameRoom = 5;
+            const gId = 5;
             const testSub = user.sub;
 
             const response1 = await axios.get('https://localhost:7015/api/Game/getAllPlayerGame');
-            setPlayerGame(response1.data);
+            const updatedPlayerGame = response1.data;
+            setPlayerGame(updatedPlayerGame);
 
-            const isUserInGame = playerGame.some((pg) =>
-                pg.GameId === gameIdForGameRoom && pg.PlayerId === testSub);
+            const isUserInGame = updatedPlayerGame.some((pg) =>
+                pg.gameId === gId && pg.playerId === testSub);
 
             if (isUserInGame) {
-                navigate(`/gameroom/${gameIdForGameRoom}`);
-                alert("SUCCESS");
+                navigate(`/gameroom/${gId}`);
             } else {
-                //const response = await axios.post(`https://localhost:7015/api/Game/join/${gameIdForGameRoom}`, `${testSub}`, {
-                //    headers: { 'Content-Type': 'text/plain' }
-                //});
-                //navigate(`/gameroom/${gameIdForGameRoom}`);
-                alert("FAILED")
+                const response = await axios.post(`https://localhost:7015/api/Game/join/${gId}`, `${testSub}`, {
+                    headers: { 'Content-Type': 'text/plain' }
+                });
+                navigate(`/gameroom/${gId}`);
             }
             
         }

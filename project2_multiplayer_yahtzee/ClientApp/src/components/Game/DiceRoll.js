@@ -1,21 +1,22 @@
 ﻿import { useState, useEffect } from 'react';
-import { chatHub, diceRolls } from '../Chat/ChatHub';
+import { signalRHub, diceRolls } from './SignalRHub';
 
-function Roll() {
+function Roll({ updateDiceValues }) {
     const [rollList, setRollList] = useState([]);
 
     useEffect(() => {
-        chatHub.on('RecieveRoll', (roll) => {
+        signalRHub.on('RecieveRoll', (roll) => {
             setRollList(prev => [...prev, { roll }]);
         });
 
-        chatHub.start(); //chatHub.stop to close connection
+        signalRHub.start(); //signalRHub.stop to close connection
     }, []);
 
     const sendRoll = async () => {
         // Generate 5 dice rolls
         for (let i = 0; i < 5; i++) {
             const newRoll = Math.floor(Math.random() * 6) + 1;
+            updateDiceValues(rollList);
             await diceRolls(newRoll);
         }
     }

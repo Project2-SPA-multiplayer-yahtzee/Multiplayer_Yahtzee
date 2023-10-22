@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using project2_multiplayer_yahtzee.Data;
 using project2_multiplayer_yahtzee.Models;
-using System.Linq;
 using System.Text;
 
 namespace project2_multiplayer_yahtzee.Controllers
@@ -155,9 +152,17 @@ namespace project2_multiplayer_yahtzee.Controllers
         [HttpGet("getPlayersInGame/{id}")]
         public async Task<ActionResult<IEnumerable<PlayerGame>>> GetPlayerGamesByGameId(int id)
         {
+
             var gamePlayers = await _context.PlayerGames
-                .Include(u => u.Player.UserName)
+                .Include(pg => pg.Player)
                 .Where(pg => pg.GameId == id)
+                .Select(pg => new
+                {
+                    PlayerId = pg.PlayerId,
+                    UserName = pg.Player.UserName, 
+                    GameId = pg.GameId,
+                    Score = pg.Score
+                })
                 .ToListAsync();
 
             return Ok(gamePlayers);

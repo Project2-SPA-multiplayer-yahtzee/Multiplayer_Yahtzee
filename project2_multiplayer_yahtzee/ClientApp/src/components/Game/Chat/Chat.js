@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import { chatHub, sendMessage } from './ChatHub';
+import { signalRHub, sendMessage } from '../SignalRHub';
 
 function Chat() {
     const [messageList, setMessageList] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
     useEffect(() => {
-        chatHub.on('ReceiveMessage', (user, message) => {
+        signalRHub.on('ReceiveMessage', (user, message) => {
             setMessageList(prev => [...prev, { user, message }]);
         });
 
-        chatHub.start(); //chatHub.stop to close connection
+        signalRHub.start(); 
     }, []);
 
 

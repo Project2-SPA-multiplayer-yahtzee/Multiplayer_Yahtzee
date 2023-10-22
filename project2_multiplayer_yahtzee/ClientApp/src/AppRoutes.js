@@ -24,7 +24,7 @@ const AppRoutes = [
     element: <Rules />
   },
   {
-    path: '/gameroom/:gameId',
+      path: '/gameroom/:gId',
     element: <GameRoom />
   },
   ...ApiAuthorzationRoutes

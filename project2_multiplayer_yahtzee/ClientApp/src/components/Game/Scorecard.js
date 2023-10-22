@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
 
-function Scorecard() {
+function Scorecard({ diceValues }) {
     const [scorecard, setScorecard] = useState({
         ones: null,
         twos: null,
@@ -23,7 +23,7 @@ function Scorecard() {
 
     // Initialize the SignalR connection.
     const hubConnection = new HubConnectionBuilder()
-        .withUrl('/YahtzeeHub')  // Replace '/hubUrl' with your SignalR hub URL.
+        .withUrl('/signalRHub')  // Replace '/hubUrl' with your SignalR hub URL.
         .build();
 
     useEffect(() => {
@@ -332,17 +332,3 @@ function Scorecard() {
 }
 
 export default Scorecard;
-
-
-
-
-
-
-
-
-
-
-
-//Display the scoring options for each player.
-//Allow players to select scoring categories.
-//Implement the scoring logic and calculate scores.
