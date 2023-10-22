@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Chat from '../Chat/Chat'
-import Roll from '../Game/DiceRoll';
+import Chat from '../Game/Chat/Chat'
 
 
 export class Home extends Component {

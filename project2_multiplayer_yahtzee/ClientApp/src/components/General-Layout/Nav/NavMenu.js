@@ -48,7 +48,7 @@ export class NavMenu extends Component {
                                 <NavLink tag={Link} className="nav-link" to="/leaderboard">Leaderboard</NavLink>
                             </NavItem>
                             <Dropdown isOpen={dropdownOpen} toggle={this.toggleDropdown}>
-                                <DropdownToggle caret className="nav-link">Yahtzee!</DropdownToggle>
+                                <DropdownToggle caret className="nav-link">Rock-Paper-Scissors!</DropdownToggle>
                                 <DropdownMenu>
                                     <DropdownItem tag={Link} to="/gamelobby">Game Lobby</DropdownItem>
                                     <DropdownItem tag={Link} to="/rules">Rules</DropdownItem>

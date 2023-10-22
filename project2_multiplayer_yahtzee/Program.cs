@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
-using project2_multiplayer_yahtzee.ChatHub;
+using project2_multiplayer_yahtzee.SignalRHub;
 using project2_multiplayer_yahtzee.Controllers;
 using project2_multiplayer_yahtzee.Data;
 using project2_multiplayer_yahtzee.Models;
@@ -48,8 +48,6 @@ namespace project2_multiplayer_yahtzee
 
             var app = builder.Build();
 
-            app.MapHub<YahtzeeHub>("/yahtzeehub");
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -73,7 +71,7 @@ namespace project2_multiplayer_yahtzee
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<ChatHubService>("/chathub");
+                endpoints.MapHub<SignalRHubService>("/signalrhub");
             });
 
             app.MapControllerRoute(

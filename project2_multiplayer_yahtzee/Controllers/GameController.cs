@@ -31,6 +31,7 @@ namespace project2_multiplayer_yahtzee.Controllers
         [HttpPost("creategame")]
         public async Task<ActionResult<Game>> CreateGame([FromBody] Game game)
         {
+
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
             return Ok(game);

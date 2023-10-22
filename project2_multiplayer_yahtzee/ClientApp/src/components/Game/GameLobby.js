@@ -2,6 +2,7 @@
 import axios from 'axios';
 import authService from '../api-authorization/AuthorizeService';
 import { useNavigate } from 'react-router-dom';
+import RandomGenerator from '../RandomGenerator'
 
 function GameLobby() {
     const [game, setGame] = useState({
@@ -11,7 +12,6 @@ function GameLobby() {
     let navigate = useNavigate();
     const [games, setGames] = useState([]);
     const [playerGame, setPlayerGame] = useState([]);
-
 
 
     const getGames = async () => {
@@ -33,12 +33,11 @@ function GameLobby() {
         }
     };
 
-
     const joinGame = async (gId) => {
         try {
             
             const user = await authService.getUser();
-            const gId = 5;
+            const gId = 2;
             const testSub = user.sub;
 
             const response1 = await axios.get('https://localhost:7015/api/Game/getAllPlayerGame');
@@ -84,6 +83,7 @@ function GameLobby() {
                         </li>
                     ))}
                 </ul>
+                <RandomGenerator />
             </div>
         </div>
     );

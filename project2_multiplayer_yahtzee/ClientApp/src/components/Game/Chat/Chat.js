@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { signalRHub, sendMessage } from '../SignalRHub';
+import { signalRHub } from '../../SignalR/SignalRHub';
+import { sendMessage } from '../../SignalR/UseSignalR';
 
 function Chat() {
     const [messageList, setMessageList] = useState([]);

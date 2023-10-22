@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Scorecard from './Scorecard';
-import DiceRoll from './DiceRoll'; 
 import Chat from './Chat/Chat'
 import authService from '../api-authorization/AuthorizeService';
 
@@ -12,18 +10,12 @@ const GameRoom = () => {
     const [game, setGame] = useState(null);
     const [player, setPlayer] = useState(null);
     const [gamePlayers, setGamePlayers] = useState([]);
-    const [diceValues, setDiceValues] = useState([]);
 
     useEffect(() => {
-
         getGame();
         fetchPlayerDetails();
         fetchPlayersInGame();
     }, [gId]);
-
-    const updateDiceValues = (newValues) => {
-        setDiceValues(newValues);
-    };
 
     const getGame = async () => {
         try {
@@ -62,7 +54,6 @@ const GameRoom = () => {
     };
 
 
-
     return (
         <div>
             {game && player && (
@@ -74,13 +65,7 @@ const GameRoom = () => {
                             <li key={index}>{gamePlayer.userName}</li>
                         ))}
                     </ul>
-
-
                     <button onClick={startGame}>Start Game</button>
-                    <Scorecard diceValues={diceValues} />
-                    
-                    <DiceRoll updateDiceValues={updateDiceValues} />
-                    
                     <Chat />
                 </div>
             )}
