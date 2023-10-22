@@ -3,9 +3,13 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Chat from './Chat/Chat'
 import authService from '../api-authorization/AuthorizeService';
+import ValueSelector from '../Game/ValueSelector'
+
+
 
 const GameRoom = () => {
 
+    const [choice, setChoice] = useState([]);
     const { gId } = useParams();
     const [game, setGame] = useState(null);
     const [player, setPlayer] = useState(null);
@@ -53,6 +57,15 @@ const GameRoom = () => {
         }
     };
 
+    const setRock = () => {
+        setChoice(1)
+    };
+    const setPaper = () => {
+        setChoice(2)
+    };
+    const setScissor = () => {
+        setChoice(3)
+    };
 
     return (
         <div>
@@ -67,6 +80,11 @@ const GameRoom = () => {
                     </ul>
                     <button onClick={startGame}>Start Game</button>
                     <Chat />
+                    <button onClick={setRock}>Rock</button>
+                    <button onClick={setPaper}>Paper</button>
+                    <button onClick={setScissor}>Scissors</button>
+
+                    <ValueSelector playerChoice={choice}/>
                 </div>
             )}
         </div>

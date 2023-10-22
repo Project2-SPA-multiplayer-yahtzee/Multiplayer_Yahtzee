@@ -2,7 +2,6 @@
 import axios from 'axios';
 import authService from '../api-authorization/AuthorizeService';
 import { useNavigate } from 'react-router-dom';
-import RandomGenerator from '../RandomGenerator'
 
 function GameLobby() {
     const [game, setGame] = useState({
@@ -83,7 +82,6 @@ function GameLobby() {
                         </li>
                     ))}
                 </ul>
-                <RandomGenerator />
             </div>
         </div>
     );

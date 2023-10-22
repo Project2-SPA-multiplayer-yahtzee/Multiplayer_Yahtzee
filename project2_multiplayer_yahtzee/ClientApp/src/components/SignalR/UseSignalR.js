@@ -5,34 +5,38 @@ const sendMessage = async (user, message) => {
     await signalRHub.invoke('SendMessage', user, message);
 }
 
-const generateRandomNumber = async () => {
-    await signalRHub.invoke('GenerateRandomNumber');
+const Selector = async (id, choice, userName) => {
+    await signalRHub.invoke('ManagePoints', id, choice, userName);
 }
 
 export default function useSignalR() {
-    const [randomNumber, setRandomNumber] = useState(null); // Add a new state for the random number
+    const [value, setValue] = useState(null); // Add a new state for the random number
 
     useEffect(() => {
 
-        const handleRandomNumber = (number) => {
-            setRandomNumber(number); // Update state with the received random number
+        const handleValue = (number) => {
+            setValue(number); // Update state with the received random number
         };
 
-        signalRHub.on('ReceiveRandomNumber', handleRandomNumber); // Listen for the random number
+        signalRHub.on('RecievePointNumber', handleValue);
 
-        signalRHub.start().catch(err => console.error('Failed to start SignalR:', err));
+        if (signalRHub.state === 'Disconnected') {
+            signalRHub.start().catch(err => console.error('Failed to start SignalR:', err));
+        }
 
         return () => {
-            signalRHub.off('ReceiveRandomNumber', handleRandomNumber); // Stop listening when the component unmounts
-            signalRHub.stop();
+            signalRHub.off('RecievePointNumber', handleValue); // Stop listening when the component unmounts
+            if (signalRHub.state === 'Connected') {
+                signalRHub.stop();
+            }
         }
     }, []);
 
-    return { randomNumber }; // Return both the received roll and the random number from the hook
+    return { value }; // Return both the received roll and the random number from the hook
 }
 
 export {
     useSignalR,
     sendMessage,
-    generateRandomNumber
+    Selector
 };

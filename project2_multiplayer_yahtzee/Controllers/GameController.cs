@@ -69,21 +69,6 @@ namespace project2_multiplayer_yahtzee.Controllers
                     return Unauthorized();
                 }
 
-                //// Check if the user has reached the game's max players limit.
-                //if (game.PlayerGames.Count >= game.MaxPlayers)
-                //{
-                //    // Game is full, return an appropriate response.
-                //    return BadRequest("Game is full.");
-                //}
-
-                //// Check if the user is already in the game.
-                //if (game.PlayerGames.Any(pg => pg.PlayerId == user.Id))
-                //{
-                //    // User is already in the game, return a conflict response or other appropriate response.
-                //    return Conflict();
-                //}
-
-                // Create a PlayerGame entry to associate the player with the game.
                 var playerGame = new PlayerGame
                 {
                     PlayerId = userId,
