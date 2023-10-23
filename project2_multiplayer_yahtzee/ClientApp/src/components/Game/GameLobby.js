@@ -36,7 +36,7 @@ function GameLobby() {
         try {
             
             const user = await authService.getUser();
-            const gId = 2;
+            const gId = 5;
             const testSub = user.sub;
 
             const response1 = await axios.get('https://localhost:7015/api/Game/getAllPlayerGame');

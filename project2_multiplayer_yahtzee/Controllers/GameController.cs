@@ -160,6 +160,56 @@ namespace project2_multiplayer_yahtzee.Controllers
             return Ok(playerGame);
         }
 
+        [HttpPut("updateGamesPlayed/{playerId}")]
+        public async Task<ActionResult> UpdateGamesPlayed(string playerId)
+        {
+            // Find the player by playerId
+            var player = await _userManager.FindByIdAsync(playerId);
+
+            if (player == null)
+            {
+                return NotFound("Player not found.");
+            }
+
+            // Increment the GamesPlayed count of the player
+            player.GamesPlayed++;
+
+            var result = await _userManager.UpdateAsync(player);
+
+            if (result.Succeeded)
+            {
+                return Ok("Games played count updated successfully.");
+            }
+            else
+            {
+                return BadRequest("Failed to update GamesPlayed count.");
+            }
+        }
+        [HttpPut("updateGamesWon/{playerId}")]
+        public async Task<ActionResult> UpdateGamesWon(string playerId)
+        {
+            // Find the player by playerId
+            var player = await _userManager.FindByIdAsync(playerId);
+
+            if (player == null)
+            {
+                return NotFound("Player not found.");
+            }
+
+            // Increment the GamesPlayed count of the player
+            player.GamesWon++;
+
+            var result = await _userManager.UpdateAsync(player);
+
+            if (result.Succeeded)
+            {
+                return Ok("Games Won count updated successfully.");
+            }
+            else
+            {
+                return BadRequest("Failed to update GamesWon count.");
+            }
+        }
 
     }
 }

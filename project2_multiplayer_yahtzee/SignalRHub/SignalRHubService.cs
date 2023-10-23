@@ -1,16 +1,24 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json.Linq;
+﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+using project2_multiplayer_yahtzee.Models;
 
 namespace project2_multiplayer_yahtzee.SignalRHub
 {
     public class SignalRHubService : Hub
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public SignalRHubService(IHttpContextAccessor httpContextAccessor)
+        public SignalRHubService(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory)
         {
             _httpContextAccessor = httpContextAccessor;
+            _httpClientFactory = httpClientFactory;
         }
         public async Task SendMessage(string user, string message)
         {
@@ -21,6 +29,7 @@ namespace project2_multiplayer_yahtzee.SignalRHub
         public static ConcurrentDictionary<string, string> playerConnection = new ConcurrentDictionary<string, string>();
         public static int playerOneScore = 0;
         public static int playerTwoScore = 0;
+
         public async Task ManagePoints(string id, int choice, string userName)
         {
 
@@ -40,25 +49,34 @@ namespace project2_multiplayer_yahtzee.SignalRHub
 
                 if (winner == playerChoiceList[0] && playerOneScore < 2 )
                 {
-                    results = playerNameList[0] + "Won the round";
+                    results = playerNameList[0] + " [...Won the round...]";
                     playerOneScore++;
 
                 }
                 else if (winner == playerChoiceList[1] && playerTwoScore < 2)
                 {
-                    results = playerNameList[1] + "Won the round";
+                    results = playerNameList[1] + " [...Won the round...]";
                     playerTwoScore++;
                 }
-
                 else if (winner == playerChoiceList[0] && playerOneScore == 2 )
                 {
-                    results = playerNameList[0] + "Won the game";
+                    await UpdateGamesPlayed(playerChoiceList[0]); // Updates both players total games played
+                    await UpdateGamesPlayed(playerChoiceList[1]);
+
+                    await UpdateGamesWon(playerChoiceList[0]); // Updates player 1s total wins
+
+                    results = playerNameList[0] + " <___Won the game!___>";
                     playerOneScore = 0;
                     playerTwoScore = 0;
                 }
                 else if (winner == playerChoiceList[1] && playerTwoScore == 2)
                 {
-                    results = playerNameList[1] + "Won the game";
+                    await UpdateGamesPlayed(playerChoiceList[0]); // Updates both players total games played
+                    await UpdateGamesPlayed(playerChoiceList[1]);
+
+                    await UpdateGamesWon(playerChoiceList[1]); // Updates player 2s total wins
+
+                    results = playerNameList[1] + " <___Won the game!___>";
                     playerOneScore = 0;
                     playerTwoScore = 0;
                 }
@@ -106,6 +124,31 @@ namespace project2_multiplayer_yahtzee.SignalRHub
             }
 
             return winner;
+        }
+
+        private async Task UpdateGamesPlayed(string playerId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var apiUrl = "https://localhost:7015/api/Game/updateGamesPlayed/" + playerId;
+            var response = await client.PutAsync(apiUrl, null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                // Handle the error if the request fails
+                Console.WriteLine("Failed to update GamesPlayed count.");
+            }
+        }
+        private async Task UpdateGamesWon(string playerId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var apiUrl = "https://localhost:7015/api/Game/updateGamesWon/" + playerId;
+            var response = await client.PutAsync(apiUrl, null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                // Handle the error if the request fails
+                Console.WriteLine("Failed to update GamesWon count.");
+            }
         }
     }
 }
