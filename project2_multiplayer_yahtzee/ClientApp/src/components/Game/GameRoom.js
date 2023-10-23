@@ -25,6 +25,7 @@ const GameRoom = () => {
         try {
             const response = await axios.get(`https://localhost:7015/api/Game/get/${gId}`);
             setGame(response.data);
+            console.log(game);
         } catch (error) {
             console.error('There was an error!', error);
         }
@@ -42,7 +43,13 @@ const GameRoom = () => {
     const startGame = async () => {
         try {
             const response = await axios.put(`https://localhost:7015/api/Game/start/${gId}`);
-            console.log(response.data);
+        } catch (error) {
+            console.error('There was an error!', error);
+        }
+    };
+    const finishGame = async () => {
+        try {
+            const response = await axios.put(`https://localhost:7015/api/Game/finish/${gId}`);
         } catch (error) {
             console.error('There was an error!', error);
         }
@@ -78,13 +85,17 @@ const GameRoom = () => {
                             <li key={index}>{gamePlayer.userName}</li>
                         ))}
                     </ul>
-                    <button onClick={startGame}>Start Game</button>
+                    {game.started && (
+                        <>
+                            <button onClick={setRock}>Rock</button>
+                            <button onClick={setPaper}>Paper</button>
+                            <button onClick={setScissor}>Scissors</button>
+                        </>
+                    )}
+                    <ValueSelector playerChoice={choice} />
                     <Chat />
-                    <button onClick={setRock}>Rock</button>
-                    <button onClick={setPaper}>Paper</button>
-                    <button onClick={setScissor}>Scissors</button>
-
-                    <ValueSelector playerChoice={choice}/>
+                    <button onClick={startGame}>Start Game</button>
+                    <button onClick={finishGame}>End Game</button>
                 </div>
             )}
         </div>

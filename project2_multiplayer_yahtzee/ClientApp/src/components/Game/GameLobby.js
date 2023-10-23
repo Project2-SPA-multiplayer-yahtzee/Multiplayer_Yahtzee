@@ -1,17 +1,25 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import authService from '../api-authorization/AuthorizeService';
 import { useNavigate } from 'react-router-dom';
 
 function GameLobby() {
     const [game, setGame] = useState({
-        Name: 'Dick',
-        PlayerGames: [], 
+        Name: '',
+        PlayerGames: [],
     });
+    const [gameNameInput, setGameNameInput] = useState('');
     let navigate = useNavigate();
     const [games, setGames] = useState([]);
     const [playerGame, setPlayerGame] = useState([]);
 
+    useEffect(() => {
+        getGames();
+    }, []);
+
+    const handleGameNameChange = (event) => {
+        setGameNameInput(event.target.value);
+    };
 
     const getGames = async () => {
         try {
@@ -25,7 +33,8 @@ function GameLobby() {
 
     const createGame = async () => {
         try {
-            const response = await axios.post('https://localhost:7015/api/Game/creategame', game);
+            const newGame = { Name: gameNameInput, PlayerGames: [] };
+            const response = await axios.post('https://localhost:7015/api/Game/creategame', newGame);
             console.log(response.data);
         } catch (error) {
             console.error('There was an error!', error);
@@ -34,9 +43,7 @@ function GameLobby() {
 
     const joinGame = async (gId) => {
         try {
-            
             const user = await authService.getUser();
-            const gId = 5;
             const testSub = user.sub;
 
             const response1 = await axios.get('https://localhost:7015/api/Game/getAllPlayerGame');
@@ -67,11 +74,17 @@ function GameLobby() {
             <h2>Game Lobby</h2>
             <div>
                 <h3>Create a New Game</h3>
+                <input
+                    type="text"
+                    placeholder="Enter game name"
+                    value={gameNameInput}
+                    onChange={handleGameNameChange}
+                />
                 <button onClick={createGame}>Create</button>
             </div>
             <div>
                 <h3>Get all games</h3>
-                <button onClick={getGames}>Get games</button>
+                <button onClick={getGames}>Update games list</button>
             </div>
             <div>
                 <h3>Join a Game</h3>

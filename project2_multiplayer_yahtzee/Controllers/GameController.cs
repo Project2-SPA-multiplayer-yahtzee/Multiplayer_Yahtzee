@@ -58,6 +58,20 @@ namespace project2_multiplayer_yahtzee.Controllers
             return Ok(game);
         }
 
+
+        [HttpGet("getPlayer/{id}")]
+        public async Task<ActionResult<Game>> GetPlayer(string id)
+        {
+            var player = await _context.Players.FindAsync(id);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(player);
+        }
+
         [HttpPost("join/{id}")]
         public async Task<IActionResult> JoinGame(int id)
         {

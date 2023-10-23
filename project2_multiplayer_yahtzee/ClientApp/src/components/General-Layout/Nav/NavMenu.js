@@ -35,7 +35,7 @@ export class NavMenu extends Component {
         return (
             <Navbar expand="lg" className="bg-primary navbar-expand-lg" data-bs-theme="dark">
                 <div className="container-fluid d-flex justify-content-between align-items-center">
-                    <NavbarBrand tag={Link} to="/">Yahtzee!!</NavbarBrand>
+                    <NavbarBrand tag={Link} to="/">RPS!!</NavbarBrand>
                     <NavbarToggler onClick={this.toggleNavbar} type="button">
                         <span className="navbar-toggler-icon"></span>
                     </NavbarToggler>
@@ -46,6 +46,9 @@ export class NavMenu extends Component {
                             </NavItem>
                             <NavItem>
                                 <NavLink tag={Link} className="nav-link" to="/leaderboard">Leaderboard</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} className="nav-link" to="/personalscores">Personal Stats</NavLink>
                             </NavItem>
                             <Dropdown isOpen={dropdownOpen} toggle={this.toggleDropdown}>
                                 <DropdownToggle caret className="nav-link">Rock-Paper-Scissors!</DropdownToggle>
