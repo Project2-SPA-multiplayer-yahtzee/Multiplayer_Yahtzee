@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
-using project2_multiplayer_yahtzee.Models;
 
 namespace project2_multiplayer_yahtzee.SignalRHub
 {
@@ -49,13 +42,13 @@ namespace project2_multiplayer_yahtzee.SignalRHub
 
                 if (winner == playerChoiceList[0] && playerOneScore < 2 )
                 {
-                    results = playerNameList[0] + " [...Won the round...]";
+                    results = "< " + playerNameList[0] + " > ...Won the round...";
                     playerOneScore++;
 
                 }
                 else if (winner == playerChoiceList[1] && playerTwoScore < 2)
                 {
-                    results = playerNameList[1] + " [...Won the round...]";
+                    results = "< " + playerNameList[1] + " > ...Won the round...";
                     playerTwoScore++;
                 }
                 else if (winner == playerChoiceList[0] && playerOneScore == 2 )
@@ -65,7 +58,7 @@ namespace project2_multiplayer_yahtzee.SignalRHub
 
                     await UpdateGamesWon(playerChoiceList[0]); // Updates player 1s total wins
 
-                    results = playerNameList[0] + " <___Won the game!___>";
+                    results = "< " + playerNameList[0] + " > ___Won the game!___";
                     playerOneScore = 0;
                     playerTwoScore = 0;
                 }
@@ -76,13 +69,13 @@ namespace project2_multiplayer_yahtzee.SignalRHub
 
                     await UpdateGamesWon(playerChoiceList[1]); // Updates player 2s total wins
 
-                    results = playerNameList[1] + " <___Won the game!___>";
+                    results = "< " + playerNameList[1] + " > <___Won the game!___>";
                     playerOneScore = 0;
                     playerTwoScore = 0;
                 }
                 else
                 {
-                    results = "Draw";
+                    results = "~Draw~";
                 }
 
 

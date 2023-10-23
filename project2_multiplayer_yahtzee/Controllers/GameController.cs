@@ -28,6 +28,14 @@ namespace project2_multiplayer_yahtzee.Controllers
             return Ok(games);
         }
 
+        [HttpGet("getPlayers")]
+        public async Task<ActionResult<IEnumerable<Game>>> GetPlayers()
+        {
+
+            var players = await _context.Players.ToListAsync();
+            return Ok(players);
+        }
+
         [HttpPost("creategame")]
         public async Task<ActionResult<Game>> CreateGame([FromBody] Game game)
         {
