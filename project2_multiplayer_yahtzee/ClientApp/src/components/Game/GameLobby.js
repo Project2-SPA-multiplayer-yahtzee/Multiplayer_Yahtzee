@@ -71,7 +71,6 @@ function GameLobby() {
 
     return (
         <div>
-            <h2>Game Lobby</h2>
             <div>
                 <h3>Create a New Game</h3>
                 <input
