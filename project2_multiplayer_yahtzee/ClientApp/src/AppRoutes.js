@@ -1,9 +1,10 @@
 import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { Leaderboard } from "./components/Leaderboard";
-import { CreateLobby } from "./components/CreateLobby";
-import { JoinLobby } from "./components/JoinLobby";
-import { Rules } from "./components/Rules";
-import { Home } from "./components/Home";
+import { Leaderboard } from "./components/General-Layout/Leaderboard";
+import GameLobby from "./components/Game/GameLobby";
+import GameRoom from "./components/Game/GameRoom";
+import { Rules } from "./components/General-Layout/Rules";
+import { Home } from "./components/General-Layout/Home";
+import PersonalScores from './components/General-Layout/PersonalScores';
 
 
 const AppRoutes = [
@@ -16,17 +17,21 @@ const AppRoutes = [
     element: <Leaderboard />
   },
   {
-    path: '/createlobby',
-    element: <CreateLobby />
-   },
-   {
-     path: '/joinlobby',
-     element: <JoinLobby />
-   },
-   {
-     path: '/rules',
-     element: <Rules />
-   },
+    path: '/gamelobby',
+    element: <GameLobby />
+  },
+  {
+    path: '/rules',
+    element: <Rules />
+  },
+  {
+    path: '/gameroom/:gId',
+    element: <GameRoom />
+  },
+  {
+    path: '/personalscores',
+    element: <PersonalScores />
+  },
   ...ApiAuthorzationRoutes
 ];
 

@@ -135,3 +135,14 @@ $RECYCLE.BIN/
 _NCrunch*
 /.vs/project2_multiplayer_yahtzee/DesignTimeBuild/.dtbcache.v2
 /.vs/project2_multiplayer_yahtzee/v17/.suo
+<<<<<<< HEAD
+=======
+/.vs/project2_multiplayer_yahtzee/v17/.futdcache.v2
+*.v2
+/.vs/project2_multiplayer_yahtzee/v17/.suo
+/.vs/Multiplayer_Yahtzee/v17/.wsuo
+/.vs/VSWorkspaceState.json
+>>>>>>> RoughGameLogic
+/.vs/ProjectEvaluation/project2_multiplayer_yahtzee.metadata.v7.bin
+/.vs/ProjectEvaluation/project2_multiplayer_yahtzee.projects.v7.bin
+/.vs/project2_multiplayer_yahtzee/v17/.futdcache.v2
